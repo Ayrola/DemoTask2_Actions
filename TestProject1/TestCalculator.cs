@@ -44,7 +44,18 @@ namespace TestProject1
             // ✅ Set remote debugging port (useful for debugging with DevTools)
             options.AddArguments("remote-debugging-port=9222");
 
-            driver = new ChromeDriver();
+            //--user-data-dir is a Chrome command-line flag that tells Chrome where to store user data like:
+
+            //Chrome uses a fresh, isolated profile every time,
+
+            //you avoid file locks/ conflicts, and
+
+            //tests run reliably in any environment.
+            string userDataDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(userDataDir);
+            options.AddArguments($"--user-data-dir={userDataDir}");
+
+            driver = new ChromeDriver(options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Url = "http://softuni-qa-loadbalancer-2137572849.eu-north-1.elb.amazonaws.com/number-calculator/";
 
