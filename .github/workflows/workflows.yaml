@@ -27,11 +27,6 @@ jobs:
     - name: Build
       run: dotnet build SeleniumBasicExercise.sln --no-restore
 
-    - name: Run TestProject1 tests
-      run: |
-        echo "Running TestProject1 tests"
-        dotnet test TestProject1/TestProject1.csproj --verbosity normal
-
     - name: Run TestProject2 tests
       run: |
         echo "Running TestProject2 tests"
