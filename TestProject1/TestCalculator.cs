@@ -1,4 +1,4 @@
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using NUnit.Framework;
@@ -20,6 +20,30 @@ namespace TestProject1
         [OneTimeSetUp]
         public void SetUp()
         {
+            ChromeOptions options = new ChromeOptions();
+
+            // ✅ Ensure Chrome runs in headless mode (no UI)
+            options.AddArguments("headless");
+
+            // ✅ Bypass OS security model (needed in some CI/CD and Docker environments)
+            options.AddArguments("no-sandbox");
+
+            // ✅ Overcome limited shared memory problems (useful in Docker/Linux)
+            options.AddArguments("disable-dev-shm-usage");
+
+            // ✅ Disable GPU hardware acceleration (not needed in headless mode)
+            // Mostly useful on Windows systems
+            options.AddArguments("disable-gpu");
+
+            // ✅ Set fixed window size so that page elements are correctly visible
+            options.AddArguments("window-size=1920x1080");
+
+            // ✅ Disable all Chrome extensions
+            options.AddArguments("disable-extensions");
+
+            // ✅ Set remote debugging port (useful for debugging with DevTools)
+            options.AddArguments("remote-debugging-port=9222");
+
             driver = new ChromeDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Url = "http://softuni-qa-loadbalancer-2137572849.eu-north-1.elb.amazonaws.com/number-calculator/";

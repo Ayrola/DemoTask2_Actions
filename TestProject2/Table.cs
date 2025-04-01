@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -13,8 +13,32 @@ namespace TestProject2
         [SetUp]
         public void SetUp()
         {
+            ChromeOptions options = new ChromeOptions();
+
+            // ✅ Ensure Chrome runs in headless mode (no UI)
+            options.AddArguments("headless");
+
+            // ✅ Bypass OS security model (needed in some CI/CD and Docker environments)
+            options.AddArguments("no-sandbox");
+
+            // ✅ Overcome limited shared memory problems (useful in Docker/Linux)
+            options.AddArguments("disable-dev-shm-usage");
+
+            // ✅ Disable GPU hardware acceleration (not needed in headless mode)
+            // Mostly useful on Windows systems
+            options.AddArguments("disable-gpu");
+
+            // ✅ Set fixed window size so that page elements are correctly visible
+            options.AddArguments("window-size=1920x1080");
+
+            // ✅ Disable all Chrome extensions
+            options.AddArguments("disable-extensions");
+
+            // ✅ Set remote debugging port (useful for debugging with DevTools)
+            options.AddArguments("remote-debugging-port=9222");
+
             // Create object of ChromeDriver
-            driver = new ChromeDriver();
+            driver = new ChromeDriver(options);
 
             // Add implicit wait
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
